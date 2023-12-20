@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Form di registrazione</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+
+    <style>
+        .navbar-brand {
+            color: #f6106c;
+            font-size: 2em;
+        }
+
+        .nav-link {
+            font-size: 1.2em;
+        }
+
+        .backgroun-section {
+            background-image: url('galery/fotoindex.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
+            height: 77.5vh;
+        }
+
+        .vr {
+            color: white;
+        }
+
+        span {
+            color: #fefefe;
+        }
+
+        .button-1 {
+            background-color: #ec0c65;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            width: 120px;
+            height: 40px;
+            margin-bottom: 5px;
+
+        }
+
+        .button-2 {
+            border: none;
+        }
+
+        .button-1:hover,
+        .button-2:hover {
+            background-color: #ec0c65;
+            color: black;
+        }
+
+        .bott {
+            background-color: transparent;
+            border: none;
+        }
+
+        .errore {
+            color: red;
+            border-color: #ec0c65;
+        }
+
+        .errore::-webkit-input-placeholder {
+            color: #ec0c65;
+
+        }
+
+        .errore::-moz-input-placeholder {
+            color: #ec0c65;
+
+        }
+
+        .errore::-ms-input-placeholder {
+            color: #ec0c65;
+
+        }
+    </style>
+
+    <script src="Utility.js"></script>
+    <script type="application/javascript">
+        const UT = new Utility();
+
+        window.onload = function () {
+            const form = document.getElementById("form");
+            const bott = document.getElementById("accedi");
+
+
+            //visualizza password
+            const inputPsw = document.querySelectorAll('input[type="password"]');
+            const bottPsw = document.getElementById('toggle');
+
+            bottPsw.addEventListener('click', function () {
+                inputPsw.forEach(function (psw) {
+                    if (psw.type === 'password') {
+                        psw.type = 'text';
+                    } else {
+                        psw.type = 'password';
+                    }
+                });
+
+            });
+
+            /**
+            * Sommatoria dei numero da 0 a N
+            */
+            function sommatoria(numero) {
+                ris = 0;
+                for (var i = numero; i > 0; i--) {
+                    ris += i;
+                }
+                return ris;
+            }
+
+
+            bott.onclick = function (event) {
+                event.preventDefault();
+
+                console.log("bottone cliccato");
+                let valido = 0;
+
+                //verifica  CodiceFiscale
+                const codice = document.getElementById("codFiscale");
+
+                valido += (codice.value != null && codice.value != "" && UT.ValidoCodiceFiscale(codice.value)) ? 0 : 1;
+                console.log("VALIDO COD FISC ", valido);
+                if (valido > 0) {
+                    codFiscale.classList.add("errore");
+                    console.log("errore numero 1", codice);
+                    return codice;
+                } else {
+                    codice.classList.remove("errore");
+                    console.log("errore totale 2")
+                }
+
+                //verifica Email
+                const email = document.getElementById("Email");
+
+                valido += (email.value != null && email.value != "" && UT.validaEMail(email.value)) ? 0 : 1;
+                console.log("VALIDO email", valido);
+                if (valido > 0) {
+                    Email.classList.add("errore");
+                    console.log("errore numero 1", email);
+                    return email;
+                } else {
+                    email.classList.remove("errore");
+
+                    console.log("errore totale 1")
+                }
+
+                //verifica password
+                const password = document.getElementById("password1");
+
+                valido += (password.value != null && password.value != "" && UT.validaPassword(password.value)) ? 0 : 1;
+                console.log("VALIDO pasword", valido);
+                if (valido > 0) {
+                    password.classList.add("errore");
+                    console.log("errore numero 2", password);
+                } else {
+                    password.classList.remove("errore");
+
+                    console.log("errore totale 2")
+                }
+
+                //verifica coincidenze password
+                const password1 = document.getElementById("password1").value;
+                const password2 = document.getElementById("password2").value;
+
+                valido += (password1 === password2) ? 0 : 1;
+                console.log("VALIDO Pasww2", valido)
+
+                if (valido > 0) {
+                    // Le password non coincidono
+                    document.getElementById("password1").classList.add("errore");
+                    document.getElementById("password2").classList.add("errore");
+                    alert("Errore: Le password non coincidono");
+                    return password
+                } else {
+                    // Le password coincidono
+                    document.getElementById("password1").classList.remove("errore");
+                    document.getElementById("password2").classList.remove("errore");
+                    console.log("Le password coincidono");
+                }
+
+
+
+
+                if (valido === 0) {
+                    //scrivi json dei dati del login in console
+                    const json2 = {
+                        codice: codice.value,
+                        email: email.value,
+                        password1: password1.value,
+                        password2: password2.value
+                    };
+
+                    //richiamo il json1 dalla pagina precedente
+                    const json1 = localStorage.getItem("dati");
+                    //converto la stringa in oggetto
+                    const oggettoJson = JSON.parse(json1);
+
+                    console.log(oggettoJson, json2);
+
+
+                    // window.location.href = "#";
+                }
+
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!--NAVBAR-->
+    <header class="bg-dark">
+        <!-- Inizio navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <!-- Logo-->
+                <a class="navbar-brand fs-3" href="index.html" title="Mio logo"> <span>C</span>ode<span>X</span></a>
+                <!-- Bottone sandwitch che appare quando il menu collassa-->
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#navbaroffcanvas">
+                    <span class="navbar-toggler-icon" data-bs-target="#navbaroffcanvas"></span>
+                </button>
+                <!--Div offcanvas-->
+                <div class="offcanvas offcanvas-start" data-bs-hideresize="true" id="navbaroffcanvas">
+                    <!-- Div header del offcanvas che contiene il tutolo del pannello-->
+                    <div class="offcanvas-header bg-warning">
+                        <h5 class="offcanvas-title" id="offcanvasLabel">Menu</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            area-label="Close"></button>
+                    </div>
+                    <!-- Div body del offcanvas che contiene il menu da far collassare-->
+                    <div class="offcanvas-body bg-dark">
+                        <!-- Voci di menu a sx-->
+                        <ul class="navbar-nav me-auto justify-content-end">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="index.html" title="Vai alla Home page">Home</a>
+                            </li>
+                        </ul>
+                        <!-- Voci di menu a destra (d-flex)-->
+                        <ul class="d-flex navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="formRegister.html" title="Profillo">Registrazione</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!--FINE NAVBAR-->
+
+    <!--IMMAGINE INDEX-->
+    <section class="backgroun-section opacity-80">
+        <div class="d-flex " style="height: 200px;">
+            <div class="vr me-3">
+            </div>
+        </div>
+        <!--L'INIZIO DELLA FORMA-->
+        <div class="card text-center bg-secondary text-white opacity-75">
+            <h5 class="text-white m-2">Compila il Form e Accedi</h5>
+            <form id="registrazione-form" method="post" novalidate>
+                <div class="container text-center pt-3 pb-3">
+                    <div class="row m-0 p-0  text-center g-3">
+                        <!--LABEL CodFiscale-->
+                        <div class="col-12 ">
+                            <input class="form-control form-control-ml col-3 " type="codFiscale" id="codFiscale"
+                                placeholder="Codice Fiscale" aria-label=".form-control-sm example">
+                        </div>
+                        <!--LABEL EMAIL-->
+                        <div class="col-12 ">
+                            <input class="form-control form-control-ml col-3 " type="Email" id="Email"
+                                placeholder="Email" aria-label=".form-control-sm example">
+                        </div>
+                        <!--LABEL PASSWORD-->
+                        <div class="col-12 ">
+                            <input class="form-control form-control-ml col-3 " type="password" id="password1"
+                                placeholder="Password" aria-label=".form-control-sm example">
+                        </div>
+                        <!--LABEL RIPETI PASSWORD-->
+                        <div class="col-12  ">
+                            <input class="form-control form-control-ml col-3 " type="password" id="password2"
+                                placeholder="Ripeti Password" aria-label=".form-control-sm example">
+                            <button type="button" class="bott" id="toggle"><img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2VzUoDMRDHg7duZre0vekL6FWxgh93i5dC0bu7mYhIn8FX0CfoWR/F9iQeelZB6SSl9dZLK1ktptuWfgVasH8YSNhkf8nMnwlja/07NXx5RiDeFWDPRRDgm/awMBFsFrqCWvDXiWDX0H6wacHax8MmyGNXczYt2GxqgDhxNWcrm2palrm0hwWXcAPVnjydCF5rJUSe2CMQ9wTimbhoxWHGIO4antx1DlSpqy0C8TiFkR4oFW46gWqIjhTgp+1SBViiXOjHAbKoONb/DiA+TNda7Ka+PFAcv2xoK4iyyXWt9HXm90A/cLMniPLzQSHaIY46kc6S/XTaT54GeT6Qdi4UgdyeAyyqQzXMhb75ZjeYfldS2XIwXHfxNAcYa7OAmxmZHmG42uzgIMoTYGfQtbJot1W7HWouLhIO71AK92cGGykfQwLsWqapGyOxhNr+TS6Rha7yo0u2iBSIyL55fEtjJFPTbDkwN01AO2bPQlA77aPMNsJM1bnTO049drsR15ZjhQBfiIt2HPEYK6bWZs3YH6zFlqRvlazWHxWff7UAAAAASUVORK5CYII=">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="button-1" id="accedi">Accedi</button>
+            </form>
+        </div>
+
+
+        <div class="d-flex pe-3 " style="height: 200px;">
+            <div class="vr ms-3 ">
+            </div>
+        </div>
+    </section>
+    <!--FINE DELLA FORMA-->
+
+
+
+
+    <!--FOOTER-->
+    <footer class="bg-dark ">
+        <div class="container text-center ">
+            <div class="row gx-5 p-3 g-1">
+                <div class="col-16 col-lg-4 col-md-4 ">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Privacy
+                        </button>
+                        <ul class="dropdown-menu bg-dark text-center p-2">
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 bg-dark"
+                                    href="#">F.A.Q</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">Privacy</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">Informativa sui cookie</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">Crediti</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 col-md-4">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            F.A.Q
+                        </button>
+                        <ul class="dropdown-menu bg-dark text-center p-2">
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">F.A.Q</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">link 1</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">link 2</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 col-md-4">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            F.A.Q
+                        </button>
+                        <ul class="dropdown-menu bg-dark text-center p-2">
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">F.A.Q</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">link 1</a>
+                            </li>
+                            <li>
+                                <a class="link-offset-2 link-offset-3-hover link-underline-opacity-0  link-underline-opacity-75-hover  text-white-50 "
+                                    href="#">link 2</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p class="text-white-50 bg-dark">Copyright &copy 2021 - CODE</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

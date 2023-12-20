@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "inlineSourceMap": false,
+        "target": "ES5",
+        "strict": true,
+        "strictNullChecks": true,
+        "outDir": "dirJS",
+        "allowJs": false,
+        "alwaysStrict": true
+    }
+}
